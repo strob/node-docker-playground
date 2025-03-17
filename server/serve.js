@@ -8,7 +8,7 @@ app = express()
 app.use('/', express.static(path.join(__dirname, '..', 'client', 'dist')))
 
 app.get('/code', function (req, res) {
-  res.send('result')
+  res.send(`The result is: ${Math.random()}`)
 })
 
 
