@@ -1,0 +1,28 @@
+name: Docker Build and Upload
+
+on: [push]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push container image to GitHub Container Registry
+      run: |
+        docker build . --tag paf-playground
+        docker tag paf-playground ghcr.io/strob/paf-playground:latest
+        docker push ghcr.io/strob/paf-playground:latest
