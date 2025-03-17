@@ -24,5 +24,8 @@ jobs:
     - name: Build and push container image to GitHub Container Registry
       run: |
         docker build . --tag paf-playground
-        docker tag paf-playground ghcr.io/strob/paf-playground:latest
-        docker push ghcr.io/strob/paf-playground:latest
+        tags="${{ github.ref_name }} ${{ github.sha }}"
+        for tag in $tags; do
+          docker tag paf-playground ghcr.io/strob/paf-playground:$tag
+          docker push ghcr.io/strob/paf-playground:$tag
+        done
